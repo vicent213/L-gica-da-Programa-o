@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace App_Exercicio_Strings
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write ("Digite o seu nome: ");
+            string nome = Console.ReadLine();
+            Console.Write ("Digite seu sobrenome:");
+            string sobrenome = Console.ReadLine();
+
+            Console.Write ($"seu nome é {nome} {sobrenome} ");
+            string saudacao = Console.ReadLine();
+
+
+            string InicialNome = nome.Substring (0,1);
+            string InicialSobrenome= sobrenome.Substring (0,1);
+            String Iniciais = InicialNome+InicialSobrenome;
+            int comprimento = nome.Length;
+            int comprimento2 = sobrenome.Length;
+            
+            int SomaTotal = comprimento+comprimento2;
+           
+
+            int metade = nome.Length/2;
+            string PrimeiraMetade = nome.Substring(0, metade);
+            int SobrenomeMetade = sobrenome.Length/2;
+            string SegundaMetade = sobrenome.Substring(metade);
+
+
+            Console.WriteLine ($"suas iniciais são: {Iniciais} e o comprimento é({SomaTotal})");
+
+            Console.WriteLine($"Seu nome secreto é:{PrimeiraMetade} {SegundaMetade}");
+
+
+            Console.ReadKey();
