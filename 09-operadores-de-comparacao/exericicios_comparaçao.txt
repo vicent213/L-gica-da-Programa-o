@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace exercicio_comparaçao
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+         Console.Write ("Digite um numero: ");
+            double numero1 = Convert.ToDouble(Console.ReadLine());
+        Console.Write ("Digite um segundo número : ");
+            double numero2= Convert.ToDouble (Console.ReadLine());
+
+            ////-------///
+
+            
+            bool maior = numero1>numero2;
+            Console.WriteLine($"{numero1} é maior que {numero2} -> {maior}");
+            Console.ReadKey();
+
+            bool menor = numero1 < numero2;
+            Console.WriteLine($"{numero1} < {numero2} -> {menor}");
+            Console.ReadKey();
+
+            bool igual = numero1==numero2;
+            Console.WriteLine ($"{numero1} == {numero2} -> {igual}");
+            Console.ReadKey();
+
+            bool DiferenteD = numero1!=numero2;
+            Console.WriteLine ($"{numero1} != {numero2} -> {DiferenteD}");
+            Console.ReadKey();
+
+            bool MaiorIgual = numero1>=numero2;
+            Console.WriteLine ($"{numero1} >= {numero2} -> {MaiorIgual}");
+            Console.ReadKey();
+
+            bool MenorIgual = numero1<=numero2;
+            Console.WriteLine ($"{numero1} <= {numero2} -> {MenorIgual}");
+            Console.ReadKey();
+        }   
+
+    }
+}
