@@ -1,25 +1,22 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 15 for Windows Desktop
-VisualStudioVersion = 15.0.34829.251
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "exercicio2", "exercicio2\exercicio2.csproj", "{A3B86BD9-690B-48A6-AE2F-FE5D29351B0B}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A3B86BD9-690B-48A6-AE2F-FE5D29351B0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3B86BD9-690B-48A6-AE2F-FE5D29351B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3B86BD9-690B-48A6-AE2F-FE5D29351B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3B86BD9-690B-48A6-AE2F-FE5D29351B0B}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F8B0D2B0-2C46-4097-A37F-71F10CD0E826}
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace exercicio2
+{
+    class Program
+    {
+        static void Main() {
+           double Pontos_Jogo = 84.68;
+            int bala_Chocolate = (int)Pontos_Jogo;
+
+            Console.WriteLine("o numero de pontos de jogo, convertido em balas é: " +bala_Chocolate);
+            Console.ReadKey();
+                }
+      
+
+    }
+}
+
