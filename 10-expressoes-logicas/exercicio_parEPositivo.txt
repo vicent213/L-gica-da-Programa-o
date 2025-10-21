@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace numeroPositivopAR
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Digite um numero:");
+            double numero = Convert.ToDouble(Console.ReadLine());
+            
+
+            bool ehPar= (numero%2==0);
+            bool ehPositivo = (numero>=0);
+            
+           if (ehPar && ehPositivo)
+            {
+                Console.Write("Seu numero é par e positivo!");
+            }
+           else
+            {
+                Console.Write("Seu número não é par e não é positivo");
+            }
+            Console.ReadKey();
+        }
+        
+
+    }
+}
