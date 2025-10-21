@@ -1,0 +1,29 @@
+using System;
+
+
+
+class App
+{
+    static void Main()
+    {
+        Console.Write("digite a altura da criança em centimetros:");
+        string alturaDada = Console.ReadLine();
+        double altura = double.Parse(alturaDada);
+
+        Console.Write("A criança está acompanhada?: ");
+        string resposta =Console.ReadLine();
+        bool Acompanhada = resposta == "sim";
+        bool PodeEntrar = altura >= 120 || Acompanhada;
+
+
+            if(PodeEntrar ==true)
+        {
+
+            Console.WriteLine("entrou!");
+        }
+        else
+        {
+            Console.WriteLine("Não pode entrar");
+        }
+    }
+}
