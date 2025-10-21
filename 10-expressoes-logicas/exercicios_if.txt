@@ -6,17 +6,17 @@ class App
 {
     static void Main()
     {
-        Console.Write("digite a altura da criança em centimetros:");
-        string alturaDada = Console.ReadLine();
-        double altura = double.Parse(alturaDada);
+        Console.Write("digite a altura da criança em centimetros:"); 
+        string alturaDada = Console.ReadLine(); //lendo a altura da criança.
+        double altura = double.Parse(alturaDada); //convertando de string para double.
 
         Console.Write("A criança está acompanhada?: ");
-        string resposta =Console.ReadLine();
-        bool Acompanhada = resposta == "sim";
-        bool PodeEntrar = altura >= 120 || Acompanhada;
+        string resposta =Console.ReadLine(); //registrando uma variavel para armazenar a resposta da pessoal.
+        bool Acompanhada = resposta == "sim"; //bool para sinalizar, se a resposta for sim.
+        bool PodeEntrar = altura >= 120 || Acompanhada; //criando uma variavel chamada pode entrar se a altura for maior igual 120, e se estiver acompanhada tambem pode entrar. Nao precisa sinalizar que não, ja que bool ou é sim ou não
 
 
-            if(PodeEntrar ==true)
+            if(PodeEntrar ==true) //condicional, porque se Pode entrar for correta, ou seja, acompanhad aou maior q 120 pode entrar. Se algum desses dados for mentira, não pode. Simplificado sem precisar da parte de "Nao".
         {
 
             Console.WriteLine("entrou!");
@@ -26,4 +26,5 @@ class App
             Console.WriteLine("Não pode entrar");
         }
     }
+
 }
