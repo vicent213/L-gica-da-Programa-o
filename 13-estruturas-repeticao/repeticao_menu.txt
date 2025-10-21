@@ -1,0 +1,75 @@
+using System;
+
+class AssistenteVirtual
+{
+    static void Main()
+    {
+        int opcaoSelecionada = -1;
+
+        ExibirMenu();
+
+    }
+
+    
+    static void ExibirMenu()
+    {
+        bool continuar =true;
+
+
+        while (continuar) { 
+        Console.WriteLine("===== Menu Interativo =====");
+        Console.WriteLine("1 - Exibir data atual");
+        Console.WriteLine("2 - Exibir hora atual");
+        Console.WriteLine("3 - Exibir saudação");
+        Console.WriteLine("0 - Finalizar");
+        Console.WriteLine("===========================");
+        Console.Write("Escolha uma opção válida: ");
+
+            string opcao= Console.ReadLine();
+            switch (opcao)
+            {
+                case "1":
+                    Console.WriteLine("Data Atual:"+ObterDataAtual());
+                    Console.WriteLine("Aperte qualquer tecla para continuar..");
+                    Console.ReadKey();
+                    break;
+                case "2":
+                    Console.WriteLine("Data hora:" + ObterHoraAtual());
+                    Console.WriteLine("Aperte qualquer tecla para continuar..");
+                    Console.ReadKey();
+                    break;
+                case "3":
+                    DizerOla();
+                    Console.WriteLine("Aperte qualquer tecla para continuar..");
+                    Console.ReadKey();
+                    break;
+               case "0":
+                    Console.WriteLine("Finalizando o MenU!");
+                    Console.WriteLine("Aperte qualquer tecla para sair..");
+                    Console.ReadKey();
+                    break;
+
+                    
+
+            }
+            break;
+    }
+    }
+    
+    static string ObterDataAtual()
+    {
+        return DateTime.Now.ToString("dd/MM/yyyy");
+    }
+
+    
+    static string ObterHoraAtual()
+    {
+        return DateTime.Now.ToString("HH:mm");
+    }
+
+    
+    static void DizerOla()
+    {
+        Console.WriteLine("Olá, usuário!\n");
+    }
+}
