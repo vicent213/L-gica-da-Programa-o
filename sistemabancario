@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+ 
 namespace SistemaBancario
 {
     class App
@@ -11,89 +7,71 @@ namespace SistemaBancario
         static void Main()
         {
             MostrarMenuPrincipal();
-
-            bool sair = false;
-
-            while (!sair)
-            {
-                MostrarMenuCliente();
-                int opcao = Convert.ToInt32(Console.ReadLine().Trim());
-                Console.WriteLine("");
-
-                switch (opcao)
-                {
-                    case '1':
-
-                        break;
-
-                    case '2':
-
-                        break;
-
-                    case '3':
-
-                        break;
-
-                    case '4':
-
-                        sair = true;
-
-                        break;
-                    default:
-
-                        Console.WriteLine("Opção Inválida!! ");
-
-                        break;
-                }
-            }
         }
-
+ 
         static void MostrarMenuPrincipal()
+ 
         {
             bool sair = false;
             while (!sair)
             {
-
-            Console.WriteLine("=========BANRISUL=========");
-            Console.WriteLine("[1] - Cadastrar Cliente");
-            Console.WriteLine("[2] - Listar CLientes");
-            Console.WriteLine("[3] - Sair");
-            int opcaoPrincipal = Convert.ToInt32(Console.ReadLine());
-
+                Console.WriteLine("=========BANRISUL=========");
+                Console.WriteLine("[1] - Cadastrar Cliente");
+                Console.WriteLine("[2] - Listar CLientes");
+                Console.WriteLine("[3] - Sair");
+                Console.WriteLine("==========================");
+                int opcaoPrincipal = Convert.ToInt32(Console.ReadLine());
                 switch (opcaoPrincipal)
                 {
                     case 1:
                         CadastrarCliente();
                         break;
-
+ 
                     case 2:
-
+                        ListarClientes();
                         break;
-
+ 
                     case 3:
-
                         sair = true;
-
                         break;
+ 
                     default:
-
                         Console.WriteLine("Opção Inválida!! ");
-
+                        Console.WriteLine("");
                         break;
                 }
             }
-
         }
-
-        static void MostrarMenuCliente()
+ 
+        static void MostrarMenuClienteCorrente()
+ 
         {
-            Console.WriteLine("=========BANRISUL=========");
+            Console.WriteLine("===================BANRISUL===================");
+            Console.WriteLine("=========== Tipo de Conta: Corrente ===========");
+            Console.WriteLine("");
             Console.WriteLine("[1] - Consultar Saldo");
             Console.WriteLine("[2] - Depositar");
             Console.WriteLine("[3] - Sacar");
             Console.WriteLine("[4] - Transferir Dinheiro");
             Console.WriteLine("[5] - Sair");
+            Console.WriteLine("");
+            Console.WriteLine("===============================================");
         }
+ 
+        static void MostrarMenuClientePoupanca()
+ 
+        {
+            Console.WriteLine("===================BANRISUL===================");
+            Console.WriteLine("=========== Tipo de Conta: Poupança ===========");
+            Console.WriteLine("");
+            Console.WriteLine("[1] - Consultar Saldo");
+            Console.WriteLine("[2] - Depositar");
+            Console.WriteLine("[3] - Transferir Dinheiro");
+            Console.WriteLine("[4] - Sair");
+            Console.WriteLine("");
+            Console.WriteLine("===============================================");
+        }
+ 
         static void CadastrarCliente()
         {
             Console.WriteLine("=========BANRISUL=========");
@@ -104,37 +82,49 @@ namespace SistemaBancario
             Console.WriteLine("Digite o seu CPF: ");
             string cpf = Console.ReadLine();
             Console.WriteLine("");
-            Console.WriteLine("Qual tipo de conta bancária deseja criar?: [1] - Conta Corrente | [2] - Conta poupança ");
+ 
+            while (true)
+            {
+            Console.WriteLine("Qual tipo de conta bancária deseja abrir?: [1] - Conta Corrente | [2] - Conta poupança ");
             int opcConta = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("");
-
-            switch (opcConta)
-            {
-
-                case 1:
-
+ 
+            if (opcConta == 1)
+                {
+                    Console.WriteLine("Conta Corrente selecionada!");
+                    ContaCorrente();
                     break;
-
-                case 2:
-
+                } else if (opcConta == 2)
+                {
+                    Console.WriteLine("Conta Poupança selecionada!");
+                    ContaPoupanca();
                     break;
-
-                default:
-
-                    Console.WriteLine("Opção Inválida!! ");
-
-                    break;
+ 
+                } else
+                {
+                    Console.WriteLine("Opção Inválida!!!");
+                }
             }
-          }
-
-              
-
-        class cliente
-        {
-
         }
-
-
+ 
+        static void ContaCorrente()
+        {
+           MostrarMenuClienteCorrente();
+ 
+        }
+ 
+        static void ListarClientes()
+        {
+        }
+        static void ContaPoupanca()
+            {
+            MostrarMenuClientePoupanca();
+        }
+ 
+ 
+    }
+ 
+}
     }
 
 }
