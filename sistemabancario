@@ -1,130 +1,159 @@
 using System;
- 
+using System.Security.Authentication;
+
 namespace SistemaBancario
 {
-    class App
-    {
+    class App                                                                                                               //Métodos: Criar Conta, Listar Clientes, Depositar, Sacar, Consultar saldo
+    {                                                                                                                       //Classes: Conta(Construtor feito aqui, toda vez que um cliente é feito,
+                                                                                                                            //o construtor pega o molde que criamos
+                                                                                                                            //
+        static List<Cliente> contas = new List<Cliente>();
         static void Main()
         {
-            MostrarMenuPrincipal();
-        }
- 
-        static void MostrarMenuPrincipal()
- 
-        {
             bool sair = false;
-            while (!sair)
+            while (sair)
             {
-                Console.WriteLine("=========BANRISUL=========");
-                Console.WriteLine("[1] - Cadastrar Cliente");
+                Console.WriteLine("Banco");
+                Console.WriteLine("[1] - Criar Conta");
                 Console.WriteLine("[2] - Listar CLientes");
-                Console.WriteLine("[3] - Sair");
-                Console.WriteLine("==========================");
+                Console.WriteLine("[3] - Depositar");
+                Console.WriteLine("[4] - Sacar");
+                Console.WriteLine("[5] - Consultar saldo");
+                Console.WriteLine("[0] - sair");
                 int opcaoPrincipal = Convert.ToInt32(Console.ReadLine());
                 switch (opcaoPrincipal)
                 {
                     case 1:
-                        CadastrarCliente();
+                        CriarConta();
                         break;
- 
                     case 2:
                         ListarClientes();
                         break;
- 
                     case 3:
+                        
+                        break;
+                    case 4:
+                        
+                        break;
+                    case 5:
+                        
+                    case 0:
                         sair = true;
                         break;
- 
                     default:
-                        Console.WriteLine("Opção Inválida!! ");
-                        Console.WriteLine("");
+                        Console.WriteLine("Opção invalida!");
                         break;
+
+
                 }
             }
         }
- 
-        static void MostrarMenuClienteCorrente()
- 
+
+        static void CriarConta()
         {
-            Console.WriteLine("===================BANRISUL===================");
-            Console.WriteLine("=========== Tipo de Conta: Corrente ===========");
-            Console.WriteLine("");
-            Console.WriteLine("[1] - Consultar Saldo");
-            Console.WriteLine("[2] - Depositar");
-            Console.WriteLine("[3] - Sacar");
-            Console.WriteLine("[4] - Transferir Dinheiro");
-            Console.WriteLine("[5] - Sair");
-            Console.WriteLine("");
-            Console.WriteLine("===============================================");
-        }
- 
-        static void MostrarMenuClientePoupanca()
- 
-        {
-            Console.WriteLine("===================BANRISUL===================");
-            Console.WriteLine("=========== Tipo de Conta: Poupança ===========");
-            Console.WriteLine("");
-            Console.WriteLine("[1] - Consultar Saldo");
-            Console.WriteLine("[2] - Depositar");
-            Console.WriteLine("[3] - Transferir Dinheiro");
-            Console.WriteLine("[4] - Sair");
-            Console.WriteLine("");
-            Console.WriteLine("===============================================");
-        }
- 
-        static void CadastrarCliente()
-        {
-            Console.WriteLine("=========BANRISUL=========");
-            Console.WriteLine("");
-            Console.WriteLine("Digite o seu nome completo:  ");
+
+            Console.WriteLine("Digite seu nome completo:");
             string nomeCompleto = Console.ReadLine();
-            Console.WriteLine("");
-            Console.WriteLine("Digite o seu CPF: ");
+
+            Console.WriteLine("Digite seu CPF:");
             string cpf = Console.ReadLine();
-            Console.WriteLine("");
- 
+
+            string TipoConta = "";
+
             while (true)
             {
-            Console.WriteLine("Qual tipo de conta bancária deseja abrir?: [1] - Conta Corrente | [2] - Conta poupança ");
-            int opcConta = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("");
- 
-            if (opcConta == 1)
+                Console.WriteLine("Qual tipo de conta bancaria deseja abrir?: 1- Conta corrente | 2- Conta Poupança ");
+                int opcao = Convert.ToInt32(Console.ReadLine());
+
+                if (opcao == 1)
                 {
-                    Console.WriteLine("Conta Corrente selecionada!");
+                    Console.WriteLine("Conta corrente selecionada!");
                     ContaCorrente();
                     break;
-                } else if (opcConta == 2)
+                }
+                else if (opcao == 2)
                 {
                     Console.WriteLine("Conta Poupança selecionada!");
                     ContaPoupanca();
                     break;
- 
-                } else
+                }
+                else
                 {
-                    Console.WriteLine("Opção Inválida!!!");
+                    Console.WriteLine("Nenhuma opção valida foi selecionada.");
+                }
+
+                
+
+            }
+            Cliente novoCliente = new Cliente(nomeCompleto, cpf, TipoConta);
+            contas.Add(novoCliente);
+
+            Console.WriteLine("Conta criada com sucesso!");
+
+
+            static void ContaCorrente()
+            {
+                Console.WriteLine("Conta corrente:");
+
+                Console.WriteLine("[3] - Depositar");
+                Console.WriteLine("[4] - Sacar");
+                Console.WriteLine("[5] - Consultar saldo");
+                Console.WriteLine("[6] - Transferir");
+                Console.WriteLine("[7] - sair");
+            }
+            static void ContaPoupanca()
+            {
+                Console.WriteLine("Conta Poupança:");
+
+                Console.WriteLine("[3] - Depositar");
+                Console.WriteLine("[4] - Sacar");
+                Console.WriteLine("[5] - Consultar saldo");
+                Console.WriteLine("[5] - sair");
+            }
+            
+
+        }
+             static void ListarClientes()
+                            {
+            Console.WriteLine("Lista de clientes:");
+            if (contas.Count == 0) //se o numero de contas criadas for 0 
+            {
+                Console.WriteLine("Nenhuma conta cadastrada.");
+            }
+                             }
+        class Cliente
+        {
+            static int contador = 1;
+
+            int numeroConta;
+            string nome;
+            string cpf;
+            string tipo;
+            double saldo;
+
+            //construtor
+            public Cliente(string nomeCliente, string cpfCliente, string tipoConta)
+            {
+                numeroConta = contador++;
+                nome = nomeCliente;
+                cpf = cpfCliente;
+                tipo = tipoConta;
+                saldo = 0;
+
+                void MostrarDados()
+                {
+                    Console.WriteLine($"Conta: {numeroConta}");
+                    Console.WriteLine($"Nome: {nome}");
+                    Console.WriteLine($"CPF: {cpf}");
                 }
             }
-        }
- 
-        static void ContaCorrente()
-        {
-           MostrarMenuClienteCorrente();
- 
-        }
- 
-        static void ListarClientes()
-        {
-        }
-        static void ContaPoupanca()
-            {
-            MostrarMenuClientePoupanca();
-        }
- 
- 
-    }
- 
-}
-    }
 
-}
+            
+        }
+       class ContaBancaria
+        {
+            int numeroConta;
+            string TipoConta;
+
+            }
+        }
