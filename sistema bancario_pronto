@@ -1,0 +1,325 @@
+using System;
+using System.Collections.Generic;
+
+namespace SistemaBancario
+{
+    class Conta
+    {
+        public string Nome { get; set; }
+        public string CPF { get; set; }
+        public string TipoConta { get; set; }
+        public double Saldo { get; set; }
+        public string NumeroConta { get; set; }
+
+        public Conta(string numeroConta, string cpf, double saldoInicial)
+        {
+            NumeroConta = numeroConta;
+            CPF = cpf;
+            Saldo = saldoInicial;
+        }
+    }
+
+    class App
+    {
+        static List<Conta> contas = new List<Conta>();
+
+        static void Main()
+        {
+            MostrarMenuPrincipal();
+        }
+
+        static void MostrarMenuPrincipal()
+        {
+            bool sair = false;
+            while (!sair)
+            {
+                Console.WriteLine("========= BANRISUL =========");
+                Console.WriteLine("[1] - Cadastrar Cliente");
+                Console.WriteLine("[2] - Listar Clientes");
+                Console.WriteLine("[3] - Acessar Conta");
+                Console.WriteLine("[4] - Sair");
+                Console.WriteLine("[5]- Transferência ");
+                Console.WriteLine("===========================");
+                Console.WriteLine("");
+                Console.Write("Selecione: ");
+                int opcaoPrincipal = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+
+                switch (opcaoPrincipal)
+                {
+                    case 1:
+                        CadastrarCliente();
+                        break;
+                    case 2:
+                        ListarClientes();
+                        break;
+                    case 3:
+                        AcessarConta();
+                        break;
+                    case 4:
+                        sair = true;
+                        break;
+                    case 5:
+                        Transferencia();
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida.");
+                        break;
+                }
+            }
+        }
+
+
+        static void Transferencia()
+        {
+
+            Console.Write("Número da conta de origem: ");
+            string numeroOrigem = Console.ReadLine();
+            Console.WriteLine("Número da conta de destino: ");
+            string numeroDestino = Console.ReadLine();
+
+            Conta contaOrigem = contas.Find(c => c.NumeroConta == numeroOrigem);
+            Conta contaDestino = contas.Find(c => c.NumeroConta == numeroDestino);
+
+            if (contaOrigem == null || contaDestino == null)
+            {
+                Console.WriteLine("Conta não encontrada!");
+                return;
+
+            }
+
+            Console.Write("Valor da transferencia: ");
+            double valor = Convert.ToDouble(Console.ReadLine());
+
+            if (valor <= 0)
+            {
+                Console.WriteLine("Valor invalido");
+                return;
+            }
+            if (contaOrigem.Saldo< valor)
+            {
+                Console.WriteLine("Saldo insuficiente");
+                return;
+
+            }
+            contaOrigem.Saldo -= valor;
+            contaDestino.Saldo += valor;
+
+            Console.WriteLine("Transferência realizada com sucesso");
+        }
+
+            static string GerarNumeroConta()
+            {
+                return (1000 + contas.Count + 1).ToString();
+            }
+            static void CadastrarCliente()
+            {
+                Console.WriteLine("=====================");
+                Console.WriteLine("Cadastro de Cliente");
+                Console.WriteLine("=====================");
+                Console.Write("Nome completo: ");
+                string nome = Console.ReadLine();
+                Console.WriteLine("");
+                Console.Write("CPF: ");
+                string cpf = Console.ReadLine();
+                Console.WriteLine("");
+                Console.WriteLine("=======================");
+
+                int tipo;
+                do
+                {
+                    Console.WriteLine("");
+                    Console.Write("Tipo de conta [1] Corrente | [2] Poupança: ");
+                    tipo = Convert.ToInt32(Console.ReadLine());
+                }
+                while (tipo != 1 && tipo != 2);
+
+                string tipoConta;
+                if (tipo == 1)
+                {
+                    tipoConta = "Corrente";
+                }
+                else
+                {
+                    tipoConta = "Poupança";
+                }
+
+                Conta novaConta = new Conta(GerarNumeroConta(), cpf, 1000)
+                {
+                    Nome = nome,
+                    TipoConta = tipoConta
+                };
+
+                contas.Add(novaConta);
+
+                Console.WriteLine("");
+                Console.WriteLine("Conta cadastrada com sucesso!");
+                Console.ReadLine();
+                Console.WriteLine($"Número da conta: {novaConta.NumeroConta}");
+                Console.ReadLine();
+                Console.WriteLine("");
+                Console.Clear();
+            }
+
+            static void ListarClientes()
+            {
+                if (contas.Count == 0)
+                {
+                    Console.WriteLine("Nenhum cliente cadastrado.");
+                    Console.ReadLine();
+                    Console.WriteLine("");
+                    Console.Clear();
+                    return;
+                }
+
+                Console.WriteLine("Clientes Cadastrados:");
+                Console.WriteLine("");
+                for (int i = 0; i < contas.Count; i++)
+                {
+                    Conta c = contas[i];
+                    Console.WriteLine($"Nome: {c.Nome} | CPF: {c.CPF} | Tipo: {c.TipoConta} | Saldo: {c.Saldo:C} | Conta: {c.NumeroConta}");
+                }
+                Console.WriteLine("");
+                Console.ReadLine();
+                Console.Clear();
+            }
+
+
+            static void AcessarConta()
+            {
+                Console.Write("Informe o CPF da conta: ");
+                string cpfBusca = Console.ReadLine();
+
+                Conta conta = contas.Find(c => c.CPF == cpfBusca);
+
+                if (conta == null)
+                {
+                    Console.WriteLine("Conta não encontrada!");
+                    Console.WriteLine("");
+                    Console.ReadLine();
+                    Console.Clear();
+                    return;
+                }
+
+
+                if (conta.TipoConta == "Corrente")
+                    MenuContaCorrente(conta);
+                else
+                    MenuContaPoupanca(conta);
+            }
+
+            static void MenuContaCorrente(Conta conta)
+            {
+                int opc;
+                do
+                {
+                    Console.WriteLine("===== Conta Corrente =====");
+                    Console.WriteLine("");
+                    Console.WriteLine($"Cliente: {conta.Nome}");
+                    Console.WriteLine("");
+                    Console.WriteLine("===========================");
+                    Console.WriteLine("");
+                    Console.WriteLine("[1] Consultar Saldo");
+                    Console.WriteLine("[2] Depositar");
+                    Console.WriteLine("[3] Sacar");
+                    Console.WriteLine("[4] Sair");
+                    Console.WriteLine("");
+                    Console.WriteLine("===========================");
+                    Console.Write("Escolha: ");
+                    opc = Convert.ToInt32(Console.ReadLine());
+                    Console.Clear();
+
+                    switch (opc)
+                    {
+                        case 1:
+                            Console.WriteLine($"Saldo atual: {conta.Saldo:C}");
+                            break;
+                        case 2:
+                            Depositar(conta);
+                            break;
+                        case 3:
+                            Sacar(conta);
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            Console.WriteLine("Opção inválida.");
+                            break;
+                    }
+                }
+                while (opc != 4);
+            }
+
+            static void MenuContaPoupanca(Conta conta)
+            {
+                int opc;
+                do
+                {
+                    Console.WriteLine("===== Conta Poupança =====");
+                    Console.WriteLine("");
+                    Console.WriteLine($"Cliente: {conta.Nome}");
+                    Console.WriteLine("");
+                    Console.WriteLine("===========================");
+                    Console.WriteLine("");
+                    Console.WriteLine("[1] Consultar Saldo");
+                    Console.WriteLine("[2] Depositar");
+                    Console.WriteLine("[3] Sair");
+                    Console.WriteLine("===========================");
+                    Console.Write("Escolha: ");
+                    opc = Convert.ToInt32(Console.ReadLine());
+                    Console.Clear();
+
+                    switch (opc)
+                    {
+                        case 1:
+                            Console.WriteLine("");
+                            Console.WriteLine($"Saldo atual: {conta.Saldo:C}");
+                            Console.WriteLine("");
+                            Console.Clear();
+                            break;
+                        case 2:
+                            Depositar(conta);
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            {
+                                Console.WriteLine("Opção inválida.");
+                                Console.Clear();
+                                break;
+                            }
+                    }
+                }
+                while (opc != 3);
+            }
+
+            static void Depositar(Conta conta)
+            {
+                Console.Write("Valor do depósito: ");
+                double valor = Convert.ToDouble(Console.ReadLine());
+                conta.Saldo += valor;
+                Console.WriteLine("");
+                Console.WriteLine("Depósito realizado.");
+            }
+
+            static void Sacar(Conta conta)
+            {
+                Console.Write("Valor do saque: ");
+                double valor = Convert.ToDouble(Console.ReadLine());
+                if (valor > conta.Saldo)
+                {
+                    Console.WriteLine("");
+                    Console.WriteLine("Saldo insuficiente.");
+                }
+                else
+                {
+                    conta.Saldo -= valor;
+                    Console.WriteLine("");
+                    Console.WriteLine("Saque realizado.");
+                }
+
+
+            }
+
+        }
+    }
