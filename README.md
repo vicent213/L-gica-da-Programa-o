@@ -1,1 +1,1 @@
-Conteudo e exercicios do dia 17/10/2025
+Pasta destinada para treinamento do Banrisul, com todos os exercicios e conteúdo. 
