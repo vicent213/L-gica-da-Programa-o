@@ -1,0 +1,288 @@
+ public class Cliente
+        {
+            //int ID; - implementar depois 
+            public string Nome {get; set;}
+            public string CPF { get; protected set;}
+            public List<ContaBancaria> Contas{ get; set;}
+         
+                
+              //construtor da cliente  
+            public Cliente (string Nome, string CPF)
+            {
+                this.Nome = Nome;
+                this.CPF= CPF;
+                Contas = new List<ContaBancaria>();  
+            }   
+           
+        
+
+        }
+       
+    public abstract class ContaBancaria
+    {
+        private int NumeroConta { get; set;}
+        public double saldo { get; protected set;}
+        
+             //construtor conta bancaria
+        public ContaBancaria( int NumeroConta, double saldoInicial)
+        {
+            this.NumeroConta = NumeroConta;
+            saldo = saldoInicial;
+            
+            
+        }
+        
+        //metodos
+        public virtual void Depositar(double valor)
+        {
+            if (valor > 0)
+            {
+                saldo +=valor;
+                Console.WriteLine($"Deposito realizado. Novo saldo:{saldo}");
+            }
+            else
+            {
+                Console.WriteLine("Deposito nao efetuado, o valor deve ser positivo");
+            }
+        }
+        public virtual void Sacar(double valor, double saldo)
+        {
+            if(valor>0 && valor<= saldo)//garantir que nao excede o saldo
+            {
+                saldo -= valor;
+                Console.WriteLine($"Saque realizado. Novo saldo: {saldo}");
+            } else if (valor > saldo)
+            {
+                Console.WriteLine("saldo insuficiente para realizar saque");
+            }
+            else
+            {
+                Console.WriteLine("Valor do saque deve ser positivo");
+            }
+        }
+        public virtual void Transferir(ContaBancaria contaDestino, double valor)
+        {
+            if (valor> 0 && valor <= saldo)
+            {
+                this.Sacar(valor,saldo);
+
+                contaDestino.Depositar(valor);
+                Console.WriteLine("Transferencia");
+            }
+            else
+            {
+                Console.WriteLine("Transferencia nao efetuada. Verfique o valor ou o saldo");
+            }
+        }
+    }  
+    public class ContaCorrente: ContaBancaria
+        {
+
+         public ContaCorrente(int numeroConta, double saldo)
+                : base(numeroConta, saldo)
+            {
+
+            }
+        
+
+        public override void Sacar(double valor, double saldo)
+        {
+            if (valor > 0 && saldo>=valor)
+            {
+                saldo-= valor;
+                Console.WriteLine($"O deposito de {valor:C} foi realizado. Novo saldo: {saldo}:C ");
+                
+            }
+            else
+            {
+                Console.WriteLine($"o deposito nao foi realizado");
+            }
+        }
+        public virtual void Transferir(ContaBancaria contaDestino, double valor)
+        {
+            if (valor > 0 && valor <= saldo)
+            {
+                this.Sacar(valor, saldo);
+
+                contaDestino.Depositar(valor);
+                Console.WriteLine("Transferencia");
+            }
+            else
+            {
+                Console.WriteLine("Transferencia nao efetuada. Verfique o valor ou o saldo");
+            }
+        }
+
+    }
+
+    public class ContaPoupanca: ContaBancaria
+    {
+        public ContaPoupanca(int numeroConta, double saldo)
+            : base(numeroConta, saldo)
+        {
+            
+        }
+        public override void Depositar(double valor)
+        {
+            if (valor > 0)
+            {
+                saldo += valor;
+                Console.WriteLine($"Deposito de {valor:C} foi realiado. Novo saldo: {saldo}");
+            }
+        }
+        public override void Sacar(double valor, double saldo)
+        {
+            if (valor > 0 && saldo >= valor)
+            {
+                saldo -= valor;
+                Console.WriteLine($"O deposito de {valor:C} foi realizado. Novo saldo: {saldo}:C ");
+
+            }
+            else
+            {
+                Console.WriteLine($"o deposito nao foi realizado");
+            }
+        }
+
+    }
+
+    public class Banco
+    {
+        private List<Cliente> clientes = new List<Cliente>();
+        private List<ContaBancaria> _contas = new List<ContaBancaria>();
+        private int _proxNumeroConta = 1;
+
+
+
+        public Cliente CriarCliente(string cpf, string nome)   
+        {
+                                                                //o metodo public Cliente foi criado para retornar as 
+                                                                //informaçoes de cliente.
+            foreach (Cliente clienteCadastrado in clientes)
+            {
+                if(clienteCadastrado.CPF == cpf)
+                {
+                    Console.WriteLine("ja existe um cliente cadastrado");
+                    return clienteCadastrado;
+                }             
+            }
+
+            Cliente novoCliente = new Cliente(cpf,nome);
+
+            clientes.Add(novoCliente);
+            Console.WriteLine($"Cliente {nome} cadastado com sucesso");
+            return novoCliente;
+            
+        }
+
+        public void CadastrarContaCliente(int numeroConta, double saldo, Cliente cliente, int tipo)
+        {
+            if(tipo == 1)
+            {
+                ContaBancaria novaConta = new ContaPoupanca(numeroConta, saldo);
+                cliente.Contas.Add(novaConta);
+
+            }
+            if( tipo == 2)
+            {
+               ContaBancaria novaConta = new ContaCorrente(numeroConta, saldo);
+                cliente.Contas.Add(novaConta);
+            }
+            
+            Console.WriteLine("Conta");
+        }
+
+        public void ListarClientes()
+        {
+            Console.WriteLine("\n Clientes Cadastrados");
+            if(clientes.Count == 0)
+            {
+                Console.WriteLine("nenhum cliente cadastrado");
+            }
+            else
+            {
+                foreach(var cliente in clientes)
+                {
+                    Console.WriteLine($"cpf:{cliente.CPF}, nome: {cliente.Nome}");
+                }
+            }
+        }
+        
+
+    }
+    //metodo auxiliar para encontrar o cpf ja cadastrado
+
+    //private void EncontrarClienteCPF (string cpf)
+    
+
+    class App
+    {
+        static void Main()
+        {
+            
+            Banco banco = new Banco();
+            Cliente sarah = banco.CriarCliente("1234", "sarah");
+            Console.WriteLine("poupanca ou corrente (P ou C)");
+            int tipo;
+            banco.CadastrarContaCliente(1, 10000, sarah, 1);
+
+        }
+
+    
+    public void ExibirMenu()
+        {
+            bool sair = false;
+            while (!sair)
+            {
+                Console.WriteLine("==Banco==");
+                Console.WriteLine("1- Cadastrar Cliente");
+                Console.WriteLine("2- Cadastrar conta para cliente");
+                Console.WriteLine("3- Listar Clientes");
+                Console.WriteLine("4- Consultar saldo da conta");
+                Console.WriteLine("5- Efetuar deposito");
+                Console.WriteLine("6- Efetuar saque");
+                Console.WriteLine("7- Acessar Conta");
+                Console.WriteLine("8- Transferência");
+                Console.WriteLine("0- sair");
+                Console.WriteLine("");
+                Console.Write("Selecione: ");
+
+                int opcaoPrincipal = Convert.ToInt32(Console.ReadLine());
+                
+
+                    
+                switch (opcaoPrincipal)
+                {
+                    case 1:
+                        Console.Write("Digite o CPf do cliente: ");
+                        string cpf = Console.ReadLine();
+                        Console.WriteLine("Digite o nome do cliente: ");
+                        string nome = Console.ReadLine();
+                          
+                        break;
+                    case 2:
+                        Console.Write("Digite o cpf do cliente: ");
+                        string cpfConta=Console.ReadLine();
+                        Console.Write("Digite o numero da conta: ");
+                        int numeroConta=Convert.ToInt32(Console.ReadLine());
+                        Console.Write("Digite o saldo inicial: ");
+                        double saldoInicial=Convert.ToDouble(Console.ReadLine());
+                        Console.Write("Digite o tipo da conta (1- poupanca, 2- corrente");
+                        int tipo= Convert.ToInt32(Console.ReadLine());
+                        break;
+
+                    case 3:
+                        
+                        break;
+
+                        }
+   
+                        Console.WriteLine("Opção invalida");
+                        break;
+                
+            }
+            }
+        }
+
+
+    }
