@@ -6,63 +6,64 @@ using System.Threading;
 
 namespace banco_OrientadaObjetos
 {
-     
+
     public class Cliente
+    {
+        //int ID; - implementar depois 
+        public string Nome { get; set; }
+        public string CPF { get; protected set; }
+        public List<ContaBancaria> Contas { get; set; } = new List<ContaBancaria>();
+
+
+        //construtor da cliente  
+        public Cliente(string Nome, string CPF)
         {
-            //int ID; - implementar depois 
-            public string Nome {get; set;}
-            public string CPF { get; protected set;}
-            public List<ContaBancaria> Contas { get;set;} = new List<ContaBancaria>();
-                
-                
-              //construtor da cliente  
-            public Cliente (string Nome, string CPF)
-            {
-                this.Nome = Nome;
-                this.CPF= CPF;
-                 
-            }
+            this.Nome = Nome;
+            this.CPF = CPF;
 
-            public void InfoCliente()
-            {
-                Console.WriteLine($"Cliente: {Nome}, CPF: {CPF} ");
+        }
 
-                foreach (ContaBancaria conta in Contas)
-                {
+        public void InfoCliente()
+        {
+            Console.WriteLine($"Cliente: {Nome}, CPF: {CPF} ");
+
+            foreach (ContaBancaria conta in Contas)
+            {
                 Console.WriteLine($"Número da conta: {conta.NumeroConta}, Tipo: {conta.tipo}");
-                }
-
             }
+
+        }
     }
-       
+
     public abstract class ContaBancaria
     {
-        public int NumeroConta { get; protected set;}
-        public double Saldo { get; protected set;}
+        public int NumeroConta { get; protected set; }
+        public double Saldo { get; protected set; }
         public string tipo;
-        public string NumeroCheque { get;protected set;}
-            
-             //construtor conta bancaria
-        public ContaBancaria( int NumeroConta, double saldoInicial, string tipo)
+        public string NumeroCheque { get; protected set; }
+
+        //construtor conta bancaria
+        public ContaBancaria(int NumeroConta, double saldoInicial, string tipo)
         {
             this.NumeroConta = NumeroConta;
             Saldo = saldoInicial;
             this.tipo = tipo;
-            
-            
+
+
         }
-        
+
         //metodos
         public virtual void Depositar(double valor)
         {
-            
+
             if (valor > 0)
             {
                 if (valor >= 1000)
                 {
                     Saldo = valor + 500;
                     Console.WriteLine($"Deposito realizado. Novo saldo:{Saldo} bonus de R$500 realizado!");
-                } else
+                }
+                else
                 {
                     Saldo += valor;
                     Console.WriteLine($"Deposito realizado. Novo saldo:{Saldo}");
@@ -74,29 +75,30 @@ namespace banco_OrientadaObjetos
             }
         }
 
-        public virtual void DepositarCheque(double valor, string NumeroCheque)
+        public virtual void DepositarCheque(double valor, int NumeroCheque)
         {
-         if (valor<= 0)
+            if (valor <= 0)
             {
                 Console.WriteLine("Por favor, digite um valor válido!");
             }
-            if (NumeroCheque.Length != 9)
+            if (NumeroCheque.ToString().Length != 9)
             {
-               Console.WriteLine("Por favor, digite um número de cheque válido");
+                Console.WriteLine("Por favor, digite um número de cheque válido");
             }
 
-            Saldo+= valor;
+            Saldo += valor;
 
-            Console.Write($"Depósito de cheque de R${valor}, Cheque {NumeroCheque} realizado com sucesso!");
+           
         }
 
         public virtual void Sacar(double valor)
         {
-            if(valor>0 && valor<= Saldo)//garantir que nao excede o saldo
+            if (valor > 0 && valor <= Saldo)//garantir que nao excede o saldo
             {
                 Saldo -= valor;
                 Console.WriteLine($"Saque realizado. Novo saldo: {Saldo}");
-            } else if (valor > Saldo)
+            }
+            else if (valor > Saldo)
             {
                 Console.WriteLine("saldo insuficiente para realizar saque");
             }
@@ -105,26 +107,26 @@ namespace banco_OrientadaObjetos
                 Console.WriteLine("Valor do saque deve ser positivo");
             }
         }
- 
-    }  
 
-    public class ContaCorrente: ContaBancaria
-        {
-        
-         public ContaCorrente(int numeroConta, double saldo, string tipo = "Conta Corrente")
-                : base(numeroConta, saldo, tipo)
-            {
-                        }
     }
 
-    public class ContaPoupanca: ContaBancaria
+    public class ContaCorrente : ContaBancaria
     {
-        
+
+        public ContaCorrente(int numeroConta, double saldo, string tipo = "Conta Corrente")
+               : base(numeroConta, saldo, tipo)
+        {
+        }
+    }
+
+    public class ContaPoupanca : ContaBancaria
+    {
+
         public ContaPoupanca(int numeroConta, double saldo, string tipo = "Conta Poupança")
             : base(numeroConta, saldo, tipo)
         {
-            
-        }        
+
+        }
     }
 
     public class Banco
@@ -132,31 +134,31 @@ namespace banco_OrientadaObjetos
         private List<Cliente> clientes = new List<Cliente>();
         private List<ContaBancaria> _contas = new List<ContaBancaria>();
         private int _proxNumeroConta = 1;
-        
+
         public bool VerificarCPF(string cpf)
         {
             //cpf tem que ter 11 digitos;
             if (cpf.Length == 11)
             {
-               return true;
+                return true;
             }
             else //cpf nao tem 11 dgitos
             {
                 return false;
             }
 
-        } 
+        }
 
         public void ListarClientes()
         {
             Console.WriteLine("\n Clientes Cadastrados");
-            if(clientes.Count == 0)
+            if (clientes.Count == 0)
             {
                 Console.WriteLine("nenhum cliente cadastrado");
             }
             else
             {
-                foreach(var cliente in clientes)
+                foreach (var cliente in clientes)
                 {
                     Console.WriteLine($"cpf:{cliente.CPF}, nome: {cliente.Nome}");
                 }
@@ -190,7 +192,7 @@ namespace banco_OrientadaObjetos
             else
             {
                 Console.WriteLine("Por favor, digite um cpf válido");
-              
+
             }
         }
 
@@ -212,7 +214,7 @@ namespace banco_OrientadaObjetos
                 foreach (var conta in cliente.Contas)
                 {
                     Console.WriteLine($"Contas associada: {conta.NumeroConta}, {conta.tipo} ");
-                    
+
                 }
             }
         }
@@ -228,7 +230,7 @@ namespace banco_OrientadaObjetos
 
             Console.WriteLine("Digite qual opção de conta: 1- Poupança 2- Corrente");
             int tipo = Convert.ToInt32(Console.ReadLine());
-        
+
             Cliente cliente = clientes.Find(c => c.CPF == cpf);
 
             if (cliente == null)
@@ -248,15 +250,15 @@ namespace banco_OrientadaObjetos
                 cliente.Contas.Add(novaConta);
             }
             Console.WriteLine("Conta criada com sucesso!");
-            
+
 
         }
 
-           public void ConsultarSaldo()
-           {
+        public void ConsultarSaldo()
+        {
             Console.WriteLine("Digite o cpf do Cliente");
             string CPF = Console.ReadLine();
-            Console.WriteLine ("Digite a conta do cliente: ");
+            Console.WriteLine("Digite a conta do cliente: ");
             int numeroConta = Convert.ToInt32(Console.ReadLine());
 
 
@@ -264,19 +266,19 @@ namespace banco_OrientadaObjetos
             {
                 if (CPF == cliente.CPF)
                 {
-                    foreach  (ContaBancaria conta in cliente.Contas)
+                    foreach (ContaBancaria conta in cliente.Contas)
                     {
-                       if (conta.NumeroConta == numeroConta)
+                        if (conta.NumeroConta == numeroConta)
                         {
-                            Console.WriteLine($"o saldo dessa conta é : {conta.Saldo}"); 
+                            Console.WriteLine($"o saldo dessa conta é : {conta.Saldo}");
                         }
                     }
                 }
             }
-           }
+        }
 
-         public void RealizarDeposito()
-            {
+        public void RealizarDeposito()
+        {
             Console.WriteLine("Digite o cpf do Cliente: ");
             string CPF = Console.ReadLine();
             Console.WriteLine("Digite a conta do cliente: ");
@@ -291,8 +293,8 @@ namespace banco_OrientadaObjetos
                     foreach (ContaBancaria conta in cliente.Contas)
                     {
                         if (conta.NumeroConta == numeroConta)
-                        {   
-                            
+                        {
+
                             conta.Depositar(valor);
                             Console.WriteLine($"Deposito realizado!");
                         }
@@ -305,20 +307,32 @@ namespace banco_OrientadaObjetos
             Console.WriteLine("Digite o cpf do cliente: ");
             string CPF = Console.ReadLine();
             Console.WriteLine("Digite a conta do cliente: ");
-            int numeroConta= Convert.ToInt32(Console.ReadLine());
+            int numeroConta = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Digite o valor do deposito: ");
             double valor = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Digite o número do cheque: ");
             int numeroCheque = Convert.ToInt32(Console.ReadLine());
 
+            bool encontrado = false;
+
             foreach (Cliente cliente in clientes)
             {
                 if (CPF == cliente.CPF)
                 {
-                    foreach(ContaBancaria conta in cliente.Contas)
+                    foreach (ContaBancaria conta in cliente.Contas)
                     {
-                        if(conta.DepositarCheque == d)
+                        if (conta.NumeroConta== numeroConta)
+                        {
+                            conta.DepositarCheque(valor, numeroCheque);
+                            encontrado = true;
+
+                            Console.Write($"Depósito do {numeroCheque} de valor: R${valor} foi depositado com sucesso");
+                        }
                     }
+                }
+                if (!encontrado)
+                {
+                    Console.WriteLine("Conta ou cliente não encontrado!");
                 }
             }
 
@@ -335,12 +349,12 @@ namespace banco_OrientadaObjetos
 
             foreach (Cliente cliente in clientes)
             {
-                foreach(ContaBancaria conta in cliente.Contas)
+                foreach (ContaBancaria conta in cliente.Contas)
                 {
-                    if(conta.NumeroConta == NumeroContaOrigem)
+                    if (conta.NumeroConta == NumeroContaOrigem)
                     {
-                          conta.Sacar(valor);
-                    }        
+                        conta.Sacar(valor);
+                    }
                 }
             }
 
@@ -350,22 +364,22 @@ namespace banco_OrientadaObjetos
                 {
                     if (conta.NumeroConta == numeroContaDestino)
                     {
-                            conta.Depositar(valor);
-                     }
-                    
-                 }
-                
+                        conta.Depositar(valor);
+                    }
+
+                }
+
             }
 
         }
         public void EfetuarSaque()
         {
-         Console.WriteLine("Digite o cpf do Cliente");
-         string CPF = Console.ReadLine();
-         Console.WriteLine("Digite a conta do cliente: ");
-         int numeroConta = Convert.ToInt32(Console.ReadLine());
-         Console.WriteLine("Digite o valor para saque: ");
-         double valor = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Digite o cpf do Cliente");
+            string CPF = Console.ReadLine();
+            Console.WriteLine("Digite a conta do cliente: ");
+            int numeroConta = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Digite o valor para saque: ");
+            double valor = Convert.ToInt32(Console.ReadLine());
             foreach (Cliente cliente in clientes)
             {
                 if (CPF == cliente.CPF)
@@ -383,105 +397,106 @@ namespace banco_OrientadaObjetos
 
 
         }
-       
-      public void ImprimirInfoCliente()
+
+        public void ImprimirInfoCliente()
         {
             Console.WriteLine("Informar CPF: ");
             string cpf = Console.ReadLine();
             bool clienteEncontrado = false;
             foreach (Cliente cliente in clientes)
             {
-                if(cliente.CPF == cpf)
+                if (cliente.CPF == cpf)
                 {
                     cliente.InfoCliente();
                     clienteEncontrado = true;
                 }
-            
+
             }
 
             if (!clienteEncontrado)
             {
-               Console.WriteLine("Por favor, informar CPF cadastrado.");
+                Console.WriteLine("Por favor, informar CPF cadastrado.");
             }
-        }  
-    }  
-    
+        }
+    }
+
     class App
     {
 
         private static List<Cliente> clientes = new List<Cliente>();
-        private static int proximoNumeroConta= 001;
+        private static int proximoNumeroConta = 001;
 
         static void Main()
         {
 
-      Banco banco = new Banco();
-      bool sair = false;
-      while (!sair)
-      {
-       Thread.Sleep(2000);
-        Console.Clear();
-        Console.WriteLine("================== Sistema Bancario ===========================");
-        Console.Write("Selecione alguma das opções para Prosseguir: ");
-        Console.WriteLine("\n1- Cadastrar Cliente");
-        Console.WriteLine("\n2- Cadastrar conta para cliente");
-        Console.WriteLine("\n3- Listar Clientes");
-        Console.WriteLine("\n4- Consultar saldo da conta");
-        Console.WriteLine("\n5- Efetuar deposito");
-        Console.WriteLine("\n6- Efetuar transferência");
-        Console.WriteLine("\n7- Efetuar saque");
-        Console.WriteLine("\n8- Informações do Cliente");
-        Console.WriteLine("");
-        
-        int opcaoPrincipal = Convert.ToInt32(Console.ReadLine());
+            Banco banco = new Banco();
+            bool sair = false;
+            while (!sair)
+            {
+                Thread.Sleep(2000);
+                Console.Clear();
+                Console.WriteLine("================== Sistema Bancario ===========================");
+                Console.Write("Selecione alguma das opções para Prosseguir: ");
+                Console.WriteLine("\n1- Cadastrar Cliente");
+                Console.WriteLine("\n2- Cadastrar conta para cliente");
+                Console.WriteLine("\n3- Listar Clientes");
+                Console.WriteLine("\n4- Consultar saldo da conta");
+                Console.WriteLine("\n5- Efetuar deposito");
+                Console.WriteLine("\n6- Efetuar transferência");
+                Console.WriteLine("\n7- Efetuar saque");
+                Console.WriteLine("\n8- Informações do Cliente");
+                Console.WriteLine("\n9- Depositar Cheque");
+                Console.WriteLine("");
 
-        switch (opcaoPrincipal)
-        {
-          case 1:
-            banco.CadastrarCliente();
-            break;
-          case 2:
-            banco.CriarContaParaClientes();
-            break;
+                int opcaoPrincipal = Convert.ToInt32(Console.ReadLine());
 
-          case 3:
-            banco.ListarContaClientes();
-            break;
+                switch (opcaoPrincipal)
+                {
+                    case 1:
+                        banco.CadastrarCliente();
+                        break;
+                    case 2:
+                        banco.CriarContaParaClientes();
+                        break;
 
-          case 4:
-            banco.ConsultarSaldo();
-              break;
-          
-           case 5:
-             banco.RealizarDeposito();
-             break;
+                    case 3:
+                        banco.ListarContaClientes();
+                        break;
 
-          case 6:
-              banco.EfetuarTransferencia();
-              break;
-          
-         case 7:
-              banco.EfetuarSaque();
-              break;
-                            
-         case 8:
-            banco.ImprimirInfoCliente();
-            break;
-          
-         case 9:
-             banco.RealizarChequeDeposito();
-             break;
-         
-         default:
-         Console.WriteLine("Opção invalida!");
-         break;
+                    case 4:
+                        banco.ConsultarSaldo();
+                        break;
+
+                    case 5:
+                        banco.RealizarDeposito();
+                        break;
+
+                    case 6:
+                        banco.EfetuarTransferencia();
+                        break;
+
+                    case 7:
+                        banco.EfetuarSaque();
+                        break;
+
+                    case 8:
+                        banco.ImprimirInfoCliente();
+                        break;
+
+                    case 9:
+                        banco.RealizarChequeDeposito();
+                        break;
+
+                    default:
+                        Console.WriteLine("Opção invalida!");
+                        break;
+                }
+
+
+
+            }
+
         }
-
-        
-
-      }
-
     }
-   }
 
 }
